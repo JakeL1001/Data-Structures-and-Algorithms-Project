@@ -115,12 +115,14 @@ public class SampleProjectUnitTestJakeTests {
 
         testInt(pref + "no path", proj.numPaths(adjlist, 0, 3), 0);
 
-        adjlist = new int[][] { { 1, 5, 4 }, { 2, 1 }, { 3, 5 }, { 1, 0 }, { 1, 5 }, { 2, 3, 0 } };
+        adjlist = new int[][] { { 1, 5, 4 }, { 2, 1 }, { 3, 5 }, { 1, 0 }, { 1, 5 }, { 2, 3, 0 }, {8, 9}, {6}, {4}, {4} };
 
         testInt(pref + "jakes wacky path", proj.numPaths(adjlist, 1, 3), 2);
         testInt(pref + "jakes wacky path", proj.numPaths(adjlist, 0, 5), 3);
         testInt(pref + "jakes wacky path", proj.numPaths(adjlist, 2, 4), 2);
         testInt(pref + "jakes wacky path", proj.numPaths(adjlist, 3, 2), 2);
+        testInt(pref + "jakes wacky path", proj.numPaths(adjlist, 6, 2), 4);
+        testInt(pref + "jakes wacky path", proj.numPaths(adjlist, 7, 2), 4);
     }
 
     public static void closestInSubnetTest() {

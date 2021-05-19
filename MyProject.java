@@ -3,42 +3,27 @@
 import java.util.*;
 
 public class MyProject implements Project {
-    public boolean allDevicesConnected(int[][] adjlist) { // CURRENTLY ALL BROKEN LOL
+    public boolean allDevicesConnected(int[][] adjlist) {
+        int nodeslength = adjlist.length;
+        boolean[] visited = new boolean[nodeslength];
+        Stack<Integer> stack = new Stack<Integer>();
 
-        boolean[] visited = new boolean[adjlist.length];
-  
-        // Start the DFS from vertex 0
-        DFS(0, adjlist, visited);
-  
-        // Check if all the vertices are visited
-        // Set connected to False if one node is unvisited
-        boolean connected = true;
-        
-        for (int i = 0; i <visited.length ; i++) {
-            if(!visited[i]){
-                connected = false;
-                break;
-            }
-        } //finish the return section
-        return connected;
-    }
+        visited[0] = true;
+        stack.push(0);
+        int discovered = 0;
 
-    public void DFS(int source, int[][] adjlist, boolean[] visited){
-  
-        // Mark the vertex visited as True
-        visited[source] = true;
-  
-        // Travel the adjacent neighbours
-        for (int i = 0; i <adjlist.length ; i++) {
-            
-            int neighbour = adjlist[i];
-            
-            if(!visited[neighbour]){
-                
-                // Call DFS from neighbour
-                DFS(neighbour, adjlist, visited);
+        while (!stack.isEmpty()) {
+            int pop = stack.pop().intValue();
+            visited[pop] = true;
+            discovered++;
+            for (int neighbour : adjlist[pop]) {
+                if (!visited[neighbour] && !stack.contains(neighbour)) {
+                    stack.push(neighbour);
+                }
             }
         }
+
+        return discovered == nodeslength;
     }
 
     public int numPaths(int[][] adjlist, int src, int dst) {
@@ -53,6 +38,37 @@ public class MyProject implements Project {
 
     public int maxDownloadSpeed(int[][] adjlist, int[][] speeds, int src, int dst) {
         // TODO
+        // push stuff through the graph
+        //
         return 0;
     }
 }
+
+// public boolean allDevicesConnected(int[][] adjlist) { // CURRENTLY ALL BROKEN
+// LOL
+
+// boolean[] visited = new boolean[adjlist.length];
+// for (int i = 0; i < visited.length; i++) {
+// visited[i] = false;
+// }
+// dfs(0, adjlist, visited);
+
+// return true;
+// }
+
+// public static void dfs(int i, int[][] adjlist, boolean[] visited) {
+// System.out.println(i + " " + adjlist[i][0]);
+// if (visited[i]) {
+// System.out.println(i + "= returned");
+// return;
+// }
+
+// visited[i] = true; // Mark node as "visited"
+// System.out.println(i + " " + "test");
+
+// for (int j = i; j < adjlist[j].length; j++) {
+// if (!visited[j]) {
+// dfs(j, adjlist, visited); // Visit node
+// }
+// }
+// }

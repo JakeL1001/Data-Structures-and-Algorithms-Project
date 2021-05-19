@@ -27,8 +27,28 @@ public class MyProject implements Project {
     }
 
     public int numPaths(int[][] adjlist, int src, int dst) {
-        // TODO
-        return 0;
+        int nodeslength = adjlist.length;
+        Stack<Integer> stack = new Stack<Integer>();
+        boolean[] visited = new boolean[nodeslength];
+        int numpaths = 0;
+
+        if (src != dst) {
+            stack.push(0);
+            while (!stack.isEmpty()) {
+                int popped = stack.pop().intValue();
+                visited[popped] = true;
+                for (int neighbour : adjlist[popped]) {
+                    if (!visited[neighbour] && !stack.contains(neighbour) && neighbour != dst) {
+                        stack.push(neighbour);
+                    } else if (neighbour == dst) {
+                        numpaths++;
+                    }
+                }
+            }
+        } else {
+            numpaths = 1;
+        }
+        return numpaths;
     }
 
     public int[] closestInSubnet(int[][] adjlist, short[][] addrs, int src, short[][] queries) {
@@ -43,32 +63,3 @@ public class MyProject implements Project {
         return 0;
     }
 }
-
-// public boolean allDevicesConnected(int[][] adjlist) { // CURRENTLY ALL BROKEN
-// LOL
-
-// boolean[] visited = new boolean[adjlist.length];
-// for (int i = 0; i < visited.length; i++) {
-// visited[i] = false;
-// }
-// dfs(0, adjlist, visited);
-
-// return true;
-// }
-
-// public static void dfs(int i, int[][] adjlist, boolean[] visited) {
-// System.out.println(i + " " + adjlist[i][0]);
-// if (visited[i]) {
-// System.out.println(i + "= returned");
-// return;
-// }
-
-// visited[i] = true; // Mark node as "visited"
-// System.out.println(i + " " + "test");
-
-// for (int j = i; j < adjlist[j].length; j++) {
-// if (!visited[j]) {
-// dfs(j, adjlist, visited); // Visit node
-// }
-// }
-// }

@@ -162,6 +162,22 @@ public class SampleProjectUnitTestJakeTests {
         expected = new int[] { 0, 0, 0, 0, 1, 2 };
 
         testInts(pref + "simple cycle", proj.closestInSubnet(adjlist, addrs, 0, queries), expected);
+
+        adjlist = new int[][] { { 1 }, { 2, 0 }, { 3, 4 }, { 5, 6, 7 }, { 5, 6, 7 }, { 8 }, { 8 }, { 8 }, {}, };
+
+        addrs = new short[][] { { 10, 1, 1, 1 }, { 192, 168, 1, 1 }, { 130, 1, 1, 1 }, { 130, 95, 1, 1 },
+                { 130, 95, 1, 2 }, { 130, 95, 2, 1 }, { 130, 95, 2, 2 }, { 130, 95, 2, 3 }, { 130, 95, 3, 1 }, };
+
+        queries = new short[][] { {}, { 10 }, { 192 }, { 192, 168 }, { 130 }, { 130, 1 }, { 130, 95 }, { 130, 95, 1 },
+                { 130, 95, 2 }, { 130, 95, 3 }, { 130, 95, 2, 2 }, { 130, 95, 3, 1 }, { 8, 8, 8, 8 }, };
+
+        expected = new int[] { 0, 1, 0, 0, 1, 1, 2, 2, 3, 4, 3, 4, Integer.MAX_VALUE };
+
+        testInts(pref + "Jake's Wacky tests 1", proj.closestInSubnet(adjlist, addrs, 1, queries), expected);
+
+        expected = new int[] { 0, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, 0, Integer.MAX_VALUE, 0, 0,
+                1, 2, 1, 2, Integer.MAX_VALUE };
+        testInts(pref + "Jake's Wacky tests 2", proj.closestInSubnet(adjlist, addrs, 4, queries), expected);
     }
 
     public static void maxDownloadSpeedTest() {

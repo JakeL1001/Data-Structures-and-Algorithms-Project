@@ -57,80 +57,40 @@ public class MyProject implements Project {
         }
         return paths[dst];
     }
-    // int[] dists = new int[adjlist.length];
-    // int level = dst;
-    // int dist = 1;
-    // while (dists[src] == 0){
-    // for (int x = 0; x < adjlist.length; x++){
-    // for (int children : adjlist[x]){
-    // if (children == level){
-    // dists[x] = dist;
-    // add children to stack
-    // }
-    // }
-    // }
-    // dist++;
-    // }
-
-    // return 0;
-    // }
-    // ####################33
-    // int numpaths = 0;
-    // boolean[] visited = new boolean[adjlist.length];
-
-    // numpaths = VisitNode(src, adjlist, numpaths, visited, dst); // Start node
-    // traversal at node 0
-    // // (Note: any other node will work also)
-    // return numpaths;
-    // }
-
-    // public int VisitNode(int x, int[][] adjlist, int numpaths, boolean[] visited,
-    // int dst) {
-    // // System.out.println("visited " + x + "= true");
-    // if (x == dst) {
-    // System.out.println(x + "== destination, numpaths++");
-    // numpaths++;
-    // } else {
-    // visited[x] = true; // Mark x as visited
-    // System.out.println(x + "=/=" + dst);
-    // for (int neighbour : adjlist[x]) {
-    // if (!visited[neighbour]) {
-    // numpaths = VisitNode(neighbour, adjlist, numpaths, visited, dst); // visit
-    // node j;
-    // }
-    // }
-    // }
-    // // System.out.println("returning numpaths =" + numpaths);
-    // return numpaths;
-    // }
-
-    // int nodeslength = adjlist.length;
-    // Stack<Integer> stack = new Stack<Integer>();
-    // boolean[] visited = new boolean[nodeslength];
-    // int numpaths = 0;
-
-    // if (src != dst) {
-    // stack.push(0);
-    // while (!stack.isEmpty()) {
-    // int popped = stack.pop().intValue();
-    // visited[popped] = true;
-    // for (int neighbour : adjlist[popped]) {
-    // if (!visited[popped] && !stack.contains(neighbour) && neighbour != dst) {
-    // stack.push(neighbour);
-    // } else if (neighbour == dst) {
-    // numpaths++;
-    // }
-    // }
-    // }
-    // } else {
-    // numpaths = 1;
-    // }
-    // return numpaths;
-    // }
 
     public int[] closestInSubnet(int[][] adjlist, short[][] addrs, int src, short[][] queries) {
-        // TODO
-        return null;
+        boolean[] visited = new boolean[adjlist.length];
+        int[] nodedist = new int[adjlist.length];
+        int[] querydist = new int[queries.length];
+        for (int x = 0; x < querydist.length; x++) {
+            querydist[x] = Integer.MAX_VALUE;
+        }
+        LinkedList<Integer> queue = new LinkedList<Integer>();
+
+        nodedist[src] = 0;
+        queue.add(src);
+
+        while (!queue.isEmpty()) {
+            int currentnode = queue.pop();
+            visited[currentnode] = true;
+            for (int neighbour : adjlist[currentnode]) {
+                if (!visited[neighbour] && !queue.contains(neighbour)) {
+                    queue.add(neighbour);
+                    nodedist[neighbour] = (nodedist[currentnode] + 1);
+                }
+            }
+            for (int x = 0; x < queries.length; x++) {
+                if (queries[x].length != 0) {
+                    short[] tester = Arrays.copyOfRange(addrs[currentnode], 0, queries[x].length);
+                    if ((querydist[x] == Integer.MAX_VALUE) && Arrays.equals(tester, queries[x])) {
+                        querydist[x] = nodedist[currentnode];
+                    }
+                } else {
+                    querydist[x] = 0;
+                }
+            }
+        }
+        return querydist;
     }
 
     public int maxDownloadSpeed(int[][] adjlist, int[][] speeds, int src, int dst) {

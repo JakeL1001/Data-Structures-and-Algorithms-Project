@@ -96,52 +96,24 @@ public class SampleProjectUnitTest {
 
         String pref = "numPaths: ";
 
-        int[][] adjlist = new int[][] {
-            { 1 },
-            { 0 },
-        };
+        int[][] adjlist = new int[][] { { 1 }, { 0 }, };
 
-        testInt(pref + "trivial connected", 
-            proj.numPaths(adjlist, 0, 1), 1);
+        testInt(pref + "trivial connected", proj.numPaths(adjlist, 0, 1), 1);
 
-        adjlist = new int[][] {
-            { 1, 2 },
-            { 0, 3 },
-            { 0, 3 },
-            { 1, 2 },
-        };
-        testInt(pref + "simple two-path connected",
-            proj.numPaths(adjlist, 0, 3), 2);
+        adjlist = new int[][] { { 1, 2 }, { 0, 3 }, { 0, 3 }, { 1, 2 }, };
+        testInt(pref + "simple two-path connected", proj.numPaths(adjlist, 0, 3), 2);
 
-        adjlist = new int[][] {
-            { 1, 2 },
-            { 0, 2 },
-            { },
-            { 1, 2 },
-        };
+        adjlist = new int[][] { { 1, 2 }, { 0, 2 }, {}, { 1, 2 }, };
 
-        testInt(pref + "disconnected",
-            proj.numPaths(adjlist, 0, 3), 0);
+        testInt(pref + "disconnected", proj.numPaths(adjlist, 0, 3), 0);
 
-        adjlist = new int[][] {
-            { 1, 2 },
-            { 0, 3 },1
-            { 0, 3 },1
-            { 1, 2 },
-        };
+        adjlist = new int[][] { { 1, 2 }, { 0, 3 }, { 0, 3 }, { 1, 2 }, };
 
-        testInt(pref + "same src/dst",
-            proj.numPaths(adjlist, 0, 0), 1);
+        testInt(pref + "same src/dst", proj.numPaths(adjlist, 0, 0), 1);
 
-        adjlist = new int[][] {
-            { 0 },
-            { 0, 3 },
-            { 0, 3 },
-            { 1, 2 },
-        };
+        adjlist = new int[][] { { 0 }, { 0, 3 }, { 0, 3 }, { 1, 2 }, };
 
-        testInt(pref + "no path",
-            proj.numPaths(adjlist, 0, 3), 0);
+        testInt(pref + "no path", proj.numPaths(adjlist, 0, 3), 0);
     }
 
     public static void closestInSubnetTest() {

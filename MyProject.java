@@ -1,5 +1,5 @@
+// Jake Lyell (22704832), Jordan Lee (22705507)
 // CITS2200 Project 1
-// By Jake Lyell (22704832) Jordan Lee (22705507)
 
 import java.util.*;
 
@@ -15,7 +15,7 @@ public class MyProject implements Project {
         int discovered = 0; // Sets the total number of connected nodes to 0
 
         while (!stack.isEmpty()) { // Loops whilst there are still nodes to search
-            int pop = stack.pop().intValue(); // Pops the top node from the stack to analyze
+            int pop = stack.pop(); // Pops the top node from the stack to analyze
             visited[pop] = true; // marks it as visited and then increments the discovered variable
             discovered++;
             for (int neighbour : adjlist[pop]) { // For each node that the popped node can transmit to, it adds to the stack if that node...
@@ -101,8 +101,53 @@ public class MyProject implements Project {
     }
 
     public int maxDownloadSpeed(int[][] adjlist, int[][] speeds, int src, int dst) {
-        // TODO
-        return 0;
+        int numNodes = adjlist.length;
+        int[][] rspeeds = speeds;
+        int[] parent = new int[numNodes];
+        int maxDLSpeed = 0;
+
+        while (bfs(adjlist, rspeeds, src, dst, parent)) {
+            int pathspeed = Integer.MAX_VALUE;
+            for (int x = dst; x != src; x = parent[x]) {
+                int parentofX = parent[x];
+                //System.out.println("parent of x is " + parentofX);
+                int xindex = Arrays.asList(adjlist[parent[x]]).indexOf(x);
+                pathspeed = Math.min(pathspeed, rspeeds[parentofX][xindex]);
+            }
+            for (int x = dst; x != src; x = parent[x]) {
+                int parentofX = parent[x];
+                rspeeds[parentofX][x] -= pathspeed;
+                rspeeds[x][parentofX] += pathspeed;
+            }
+            maxDLSpeed += pathspeed;
+        }
+        return maxDLSpeed;
+    }
+
+    public boolean bfs(int[][] adjlist, int[][] rspeeds, int src, int dst, int[] parent) {
+        boolean[] visited = new boolean[adjlist.length];
+        LinkedList<Integer> queue = new LinkedList<Integer>();
+        queue.add(src);
+        visited[src] = true;
+        parent[src] = -1;
+
+        while (!queue.isEmpty()) {
+            int currentnode = queue.pop();
+            int counter = 0;
+            for (int neighbour : adjlist[currentnode]) {
+                if (!visited[neighbour] && rspeeds[currentnode][counter] > 0) {
+                    if (neighbour == dst) {
+                        parent[neighbour] = currentnode;
+                        return true;
+                    }
+                    queue.add(neighbour);
+                    parent[neighbour] = currentnode;
+                    visited[neighbour] = true;
+                }
+                counter++;
+            }
+        }
+        return false;
     }
 
 }

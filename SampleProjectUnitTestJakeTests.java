@@ -230,6 +230,13 @@ public class SampleProjectUnitTestJakeTests {
         speeds = new int[][] { { 16, 13 }, { 10, 12 }, { 4, 14 }, { 9, 20 }, { 7, 4 }, {} };
 
         testInt(pref + "online test", proj.maxDownloadSpeed(adjlist, speeds, 0, 5), 23);
+
+        adjlist = new int[][] { { 1, 4, 7 }, { 2 }, { 5, 3 }, { 10 }, { 1, 5 }, { 6, 7 }, { 10 }, { 8 }, { 6, 9 },
+                { 10 }, {} };
+        speeds = new int[][] { { 5, 10, 5 }, { 10 }, { 25, 10 }, { 5 }, { 15, 20 }, { 30, 5 }, { 15 }, { 10 },
+                { 5, 10 }, { 10 }, {} };
+
+        testInt(pref + "online test 2", proj.maxDownloadSpeed(adjlist, speeds, 0, 10), 20);
     }
 
     public static void printSummary() {

@@ -101,23 +101,51 @@ public class MyProject implements Project {
     }
 
     public int maxDownloadSpeed(int[][] adjlist, int[][] speeds, int src, int dst) {
+        if (src == dst) {
+            return -1;
+        }
         int numNodes = adjlist.length;
-        int[][] rspeeds = speeds;
+        int[][] rspeeds = Arrays.copyOf(speeds, numNodes);
         int[] parent = new int[numNodes];
         int maxDLSpeed = 0;
 
         while (bfs(adjlist, rspeeds, src, dst, parent)) {
+            // System.out.println("loop catch 2");
             int pathspeed = Integer.MAX_VALUE;
             for (int x = dst; x != src; x = parent[x]) {
+                int xindex = -1;
                 int parentofX = parent[x];
-                //System.out.println("parent of x is " + parentofX);
-                int xindex = Arrays.asList(adjlist[parent[x]]).indexOf(x);
+                // System.out.println("parent of" + x + "is " + parentofX);
+                for (int y = 0; y < adjlist[parentofX].length; y++) {
+                    //System.out.println("does this run?");
+                    if (adjlist[parentofX][y] == x) {
+                        // System.out.println("adjlist[parentofX][y] (" + adjlist[parentofX][y] + ")" + "==" + x);
+                        xindex = y;
+                    }
+                    //System.out.println("adjlist[parentofX][y] (" + adjlist[parentofX][y] + ")" + "!=" + x);
+                }
+                // System.out.println(xindex);
                 pathspeed = Math.min(pathspeed, rspeeds[parentofX][xindex]);
+                // System.out.println("pathspeed =" + pathspeed);
             }
             for (int x = dst; x != src; x = parent[x]) {
+                int xindex = -1;
+                // System.out.println("loop catch 1");
                 int parentofX = parent[x];
-                rspeeds[parentofX][x] -= pathspeed;
-                rspeeds[x][parentofX] += pathspeed;
+                // System.out.println("#2# parent of" + x + "is " + parentofX);
+                for (int y = 0; y < adjlist[parentofX].length; y++) {
+                    if (adjlist[parentofX][y] == x) {
+                        // System.out.println("#2# adjlist[parentofX][y] (" + adjlist[parentofX][y] + ")" + "==" + x);
+                        xindex = y;
+                    }
+                }
+                // System.out.println(xindex);
+                // System.out.println("pathspeed =" + pathspeed);
+                // System.out.println("rspeeds[parentofX][xindex] before subtraction = " + rspeeds[parentofX][xindex]);
+                rspeeds[parentofX][xindex] -= pathspeed;
+                // System.out.println("rspeeds[parentofX][xindex] after subtraction = " + rspeeds[parentofX][xindex]);
+                // System.out.println("" + parentofX + "" + xindex + "" + rspeeds[parentofX][xindex] + "-" + pathspeed);
+                // rspeeds[xindex][parentofX] += pathspeed; //TODO fix
             }
             maxDLSpeed += pathspeed;
         }
@@ -125,6 +153,7 @@ public class MyProject implements Project {
     }
 
     public boolean bfs(int[][] adjlist, int[][] rspeeds, int src, int dst, int[] parent) {
+        // System.out.println("loopcatcher 3");
         boolean[] visited = new boolean[adjlist.length];
         LinkedList<Integer> queue = new LinkedList<Integer>();
         queue.add(src);
@@ -135,6 +164,7 @@ public class MyProject implements Project {
             int currentnode = queue.pop();
             int counter = 0;
             for (int neighbour : adjlist[currentnode]) {
+                //System.out.println("rspeeds" + rspeeds[currentnode][counter]);
                 if (!visited[neighbour] && rspeeds[currentnode][counter] > 0) {
                     if (neighbour == dst) {
                         parent[neighbour] = currentnode;

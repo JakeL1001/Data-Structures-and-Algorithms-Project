@@ -220,6 +220,16 @@ public class SampleProjectUnitTestJakeTests {
         speeds = new int[][] { { 5, 10 }, { 5, 10 } };
 
         testInt(pref + "speed to self", proj.maxDownloadSpeed(adjlist, speeds, 0, 0), -1);
+
+        adjlist = new int[][] { { 1, 3 }, { 2, 3, 4 }, { 5 }, { 4 }, { 2, 5 }, {} };
+        speeds = new int[][] { { 10, 10 }, { 4, 2, 8 }, { 10 }, { 9 }, { 6, 10 }, {} };
+
+        testInt(pref + "backtracking", proj.maxDownloadSpeed(adjlist, speeds, 0, 5), 19);
+
+        adjlist = new int[][] { { 1, 2 }, { 2, 3 }, { 1, 4 }, { 2, 5 }, { 3, 5 }, {} };
+        speeds = new int[][] { { 16, 13 }, { 10, 12 }, { 4, 14 }, { 9, 20 }, { 7, 4 }, {} };
+
+        testInt(pref + "online test", proj.maxDownloadSpeed(adjlist, speeds, 0, 5), 23);
     }
 
     public static void printSummary() {

@@ -110,5 +110,11 @@ class MaxFlow {
         MaxFlow m = new MaxFlow();
 
         System.out.println("The maximum possible flow is " + m.fordFulkerson(graph, 0, 5));
+        int[][] array = { { 1 }, { 0 } };
+        System.out.println(array[0][0]);
+        int x = Arrays.asList(array[0]).indexOf(1);
+        boolean y = Arrays.asList(array[0]).contains(1);
+        System.out.println("" + x + y);
+
     }
 }
